@@ -16,7 +16,7 @@
 
 ### 安装指南 Installation Guide
 * Put TheaterItemsAPI.smx into "sourcemod\plugins\"
-* Put TheaterItemsAPI.inc into "sourcemod\scripting\include"
+* Put TheaterItemsAPI.inc into "sourcemod\scripting\include\"
 * Add "#include \<TheaterItemsAPI>" at the top of your plugin code and check the TheaterItemsAPI.inc file when you use it
 
 ### 主要接口 API
