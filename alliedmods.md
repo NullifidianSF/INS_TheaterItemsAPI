@@ -11,7 +11,7 @@ This API provides the function of querying the class name of gears and weapon up
 [SIZE="4"]Installation Guide[/SIZE]
 [CODE]Put TheaterItemsAPI.smx into "sourcemod\plugins\"
 Put TheaterItemsAPI.inc into "sourcemod\scripting\include\"
-Add "#include <TheaterItemsAPI>" at the top of your plugin code and check the TheaterItemsAPI.inc file when you edit use it[/CODE]
+Add "#include <TheaterItemsAPI>" at the top of your plugin code and check the TheaterItemsAPI.inc file when you use it[/CODE]
 
 [SIZE="4"]Main API[/SIZE]
  [SPOILER][PHP]/**
