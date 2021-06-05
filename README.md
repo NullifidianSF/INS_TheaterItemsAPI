@@ -17,9 +17,12 @@
 ### 安装指南 Installation Guide
 * Put TheaterItemsAPI.smx into "sourcemod\plugins\"
 * Put TheaterItemsAPI.inc into "sourcemod\scripting\include"
-* Add "#include \<TheaterItemsAPI>" at the top of your plugin code and check the TheaterItemsAPI.inc file when you edit your own plugin
+* Add "#include \<TheaterItemsAPI>" at the top of your plugin code and check the TheaterItemsAPI.inc file when you use it
 
 ### 主要接口 API
+<details>
+<summary>Click to show</summary>
+
 ```SourcePawn
  /**
  * Get theater item's index by weapon upgrade Name
@@ -104,6 +107,8 @@ bool GiveUpgradeToWeaponByName(int iWeaponID, WEAPON_UPGRADE_SLOT iUpgradeSlotTy
  */
 bool GiveUpgradeToWeaponByTheaterId(int iWeaponID, WEAPON_UPGRADE_SLOT iUpgradeSlotType, int iUpgradeID)
 ```
+
+</details>
 
 ### 使用示例 Example
 ```SourcePawn
