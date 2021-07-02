@@ -146,4 +146,4 @@ void GiveClientsWeaponAnOpticalSight(int client)
 ```
 
 
-中文INS服务器使用此插件请署名作者。
+中文INS服务器使用此插件请注明和鸣谢作者。

@@ -1,10 +1,10 @@
 /*
  * @Description: 
- *               中文INS服务器使用此插件请署名作者。
+ *               中文INS服务器使用此插件请注明和鸣谢作者。
  * @Author: Gandor
  * @Github: https://github.com/gandor233
  * @Date: 2021-02-10 04:38:27
- * @LastEditTime: 2021-06-04 03:59:31
+ * @LastEditTime: 2021-06-18 06:24:59
  * @LastEditors: Gandor
  * @FilePath: \SourceMod_1.10.0\TheaterItemsAPI.sp
  */
@@ -104,7 +104,7 @@ public Action Command_ListItemName(int client, int args)
         {
             PrintToServer("Listing %s [1~%d]", g_cTheaterItemsTableNameList[i], g_iTheaterItemsStringsCount[i]);
             PrintToConsoleAll("Listing %s [1~%d]", g_cTheaterItemsTableNameList[i], g_iTheaterItemsStringsCount[i]);
-            for (int j = 1; j < g_iTheaterItemsStringsCount[i]; j++)
+            for (int j = 1; j <= g_iTheaterItemsStringsCount[i]; j++)
             {
                 PrintToServer("  %d - %s", j, g_cTheaterItemsList[i][j]);
                 PrintToConsoleAll("  %d - %s", j, g_cTheaterItemsList[i][j]);
@@ -120,7 +120,7 @@ public int GetTheaterItemIdByName(THEATER_ITEM_TABLE_TYPE iItemTableType, char[]
 {
     if (iItemTableType >= THEATER_ITEM_TABLE_WAEPONS && iItemTableType <= THEATER_ITEM_TABLE_PLAYER_GEAR)
     {
-        for (int i = 1; i < g_iTheaterItemsStringsCount[iItemTableType]; i++)
+        for (int i = 1; i <= g_iTheaterItemsStringsCount[iItemTableType]; i++)
         {
             if (StrEqual(g_cTheaterItemsList[iItemTableType][i], cItemName, false))
             {
@@ -206,11 +206,11 @@ public void UpdateTheaterItems()
                 continue;
             }
             
-            iTableStringIndex++;
-            if (hFile != INVALID_HANDLE)
-                hFile.WriteLine("\t\"%d\" \"%s\"", iTableStringIndex, cTheaterItems[i]);
             if (iTableIndex >= 0)
             {
+                iTableStringIndex++;
+                if (hFile != INVALID_HANDLE)
+                    hFile.WriteLine("\t\"%d\" \"%s\"", iTableStringIndex, cTheaterItems[i]);
                 g_iTheaterItemsStringsCount[iTableIndex] = iTableStringIndex;
                 g_cTheaterItemsList[iTableIndex][iTableStringIndex] = cTheaterItems[i];
             }

@@ -180,7 +180,7 @@ stock bool GetPlayerGearItemName(int iItemIndex, char[] cItemName, int len)
  * @param cGearName           Gear name for check
  * @return                    Whether client has the gear
  */
-stock bool IsClientHasGear(int client, char[] cGearName)
+stock bool IsClientHasGear(int client, char[] cGearName, char[] cReturnName = "", int len = 0)
 {
     int iItemId = 255;
     int iMaxItems = GetEntPropArraySize(client, Prop_Send, "m_iMyGear");
@@ -193,7 +193,11 @@ stock bool IsClientHasGear(int client, char[] cGearName)
         char cItemName[128];
         GetPlayerGearItemName(iItemId, cItemName, sizeof(cItemName));
         if (StrContains(cItemName, cGearName, false) > -1)
+        {
+            if (len > 0)
+                strcopy(cReturnName, len, cItemName);
             return true;
+        }
     }
     
     return false;

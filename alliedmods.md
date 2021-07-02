@@ -129,7 +129,7 @@ void GiveClientsWeaponAnOpticalSight(int client)
     return;
 }[/PHP][/SPOILER]
 
-中文INS服务器使用此插件请署名作者。
+中文INS服务器使用此插件请注明和鸣谢作者。
 
 [SIZE="4"]Link[/SIZE]
 [LIST]
