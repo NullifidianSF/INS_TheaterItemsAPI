@@ -295,7 +295,7 @@ stock bool GiveUpgradeToWeaponByTheaterId(int iWeaponID, WEAPON_UPGRADE_SLOT iUp
     {
         // Refresh is required only when the weapon is in the player's hand
         if (iWeaponID != GetEntPropEnt(client, Prop_Data, "m_hActiveWeapon"))
-            return;
+            return true;
         
         int iWeaponSlot = -1;
         for (int i = 0; i < 4 ; ++i)
