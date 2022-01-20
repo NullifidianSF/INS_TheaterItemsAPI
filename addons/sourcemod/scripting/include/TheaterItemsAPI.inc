@@ -3,6 +3,8 @@
 #endif
 #define _TheaterItemsAPI_included
 
+#define INS_PL_BUYZONE (1 << 7)
+
 public SharedPlugin __pl_TheaterItemsAPI =
 {
     name = "TheaterItemsAPI",
@@ -294,8 +296,17 @@ stock bool GiveUpgradeToWeaponByTheaterId(int iWeaponID, WEAPON_UPGRADE_SLOT iUp
     {
         // Refresh is required only when the weapon is in the player's hand
         if (iWeaponID != GetEntPropEnt(client, Prop_Data, "m_hActiveWeapon"))
+<<<<<<< HEAD
             return false;
         
+=======
+            return true;
+
+        int iFlags = GetEntProp(client, Prop_Send, "m_iPlayerFlags");
+        if (iFlags & INS_PL_BUYZONE)
+            return true;
+
+>>>>>>> b9e7c4068b556205fb1f9ffdbb4027f923e210dc
         int iWeaponSlot = -1;
         for (int i = 0; i < 4 ; ++i)
         {
