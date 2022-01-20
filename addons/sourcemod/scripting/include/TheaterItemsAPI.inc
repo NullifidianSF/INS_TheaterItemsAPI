@@ -296,17 +296,12 @@ stock bool GiveUpgradeToWeaponByTheaterId(int iWeaponID, WEAPON_UPGRADE_SLOT iUp
     {
         // Refresh is required only when the weapon is in the player's hand
         if (iWeaponID != GetEntPropEnt(client, Prop_Data, "m_hActiveWeapon"))
-<<<<<<< HEAD
             return false;
         
-=======
-            return true;
-
         int iFlags = GetEntProp(client, Prop_Send, "m_iPlayerFlags");
         if (iFlags & INS_PL_BUYZONE)
-            return true;
-
->>>>>>> b9e7c4068b556205fb1f9ffdbb4027f923e210dc
+            return false;
+        
         int iWeaponSlot = -1;
         for (int i = 0; i < 4 ; ++i)
         {
@@ -316,6 +311,7 @@ stock bool GiveUpgradeToWeaponByTheaterId(int iWeaponID, WEAPON_UPGRADE_SLOT iUp
         SDKHooks_DropWeapon(client, iWeaponID, NULL_VECTOR, NULL_VECTOR);
         EquipPlayerWeapon(client, iWeaponID);
         ClientCommand(client, "slot%d", iWeaponSlot+1);
+        return true;
     }
-    return true;
+    return false;
 }
