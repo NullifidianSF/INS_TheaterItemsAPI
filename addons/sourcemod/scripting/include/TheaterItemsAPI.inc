@@ -238,8 +238,7 @@ stock bool IsClientEquippedGear(int client, char[] cGearName)
  */
 stock bool IsWeaponHasUpgrade(int iWeaponID, char[] cUpgradeName)
 {
-    int iItemId = 255;
-    int iMaxItems = GetEntPropArraySize(client, Prop_Send, "m_upgradeSlots");
+    int iMaxItems = GetEntPropArraySize(iWeaponID, Prop_Send, "m_upgradeSlots");
     for (int i = 0; i < iMaxItems; i++)
     {
         int iItemIndex = GetEntProp(iWeaponID, Prop_Send, "m_upgradeSlots", 4, i);
@@ -295,7 +294,7 @@ stock bool GiveUpgradeToWeaponByTheaterId(int iWeaponID, WEAPON_UPGRADE_SLOT iUp
     {
         // Refresh is required only when the weapon is in the player's hand
         if (iWeaponID != GetEntPropEnt(client, Prop_Data, "m_hActiveWeapon"))
-            return;
+            return false;
         
         int iWeaponSlot = -1;
         for (int i = 0; i < 4 ; ++i)

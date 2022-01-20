@@ -4,7 +4,7 @@
  * @Author: Gandor
  * @Github: https://github.com/gandor233
  * @Date: 2021-02-10 04:38:27
- * @LastEditTime: 2021-06-18 06:24:59
+ * @LastEditTime: 2022-01-19 21:29:55
  * @LastEditors: Gandor
  * @FilePath: \SourceMod_1.10.0\TheaterItemsAPI.sp
  */
@@ -171,7 +171,8 @@ public void UpdateTheaterItems()
     {
         if (strlen(cTheaterItems[i]) > 0)
         {
-            if (StrContains(cTheaterItems[i], ": ", false) > -1)
+            if (StrContains(cTheaterItems[i], "Player Gear: ", false) > -1 || StrContains(cTheaterItems[i], "Explosives: ", false) > -1
+             || StrContains(cTheaterItems[i], "Weapon Upgrades: ", false) > -1 || StrContains(cTheaterItems[i], "Weapons: ", false) > -1)
             {
                 char cTheaterItemsTableName[128];
                 cTheaterItemsTableName = cTheaterItems[i];
@@ -193,7 +194,8 @@ public void UpdateTheaterItems()
     {
         if (strlen(cTheaterItems[i]) > 0)
         {
-            if (StrContains(cTheaterItems[i], ": ", false) > -1)
+            if (StrContains(cTheaterItems[i], "Player Gear: ", false) > -1 || StrContains(cTheaterItems[i], "Explosives: ", false) > -1
+             || StrContains(cTheaterItems[i], "Weapon Upgrades: ", false) > -1 || StrContains(cTheaterItems[i], "Weapons: ", false) > -1)
             {
                 iTempTableIndex++;
                 iTableStringIndex = 0;
