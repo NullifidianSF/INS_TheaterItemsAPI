@@ -2,7 +2,8 @@
 为叛乱(2014)提供获取剧场脚本物品编号对应物品名的接口
 <br>Theater Items Name API For Insurgency(2014)
 
-此API提供查询玩家装备的战术配件和武器的升级配件在剧场中的对应类名的功能，还提供赋予玩家武器升级配件的功能。
+此API提供查询gears、weapons、explosives、weapon upgrades在theater中的对应类名的功能。
+还提供赋予玩家武器升级配件的功能。（只对部分升级配件如瞄准镜、消音器有效，对大部分增加枪械功能的配件如手电筒、脚架、延长弹夹、弹药升级无效。）
 <br>This API provides the function of querying the class name of gears and weapon upgrades of player equipment, and also provides the function of giving weapon the weapon upgrade.
 
 ### 命令 Command

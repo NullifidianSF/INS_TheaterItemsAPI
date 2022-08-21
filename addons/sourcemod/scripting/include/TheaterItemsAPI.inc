@@ -3,7 +3,7 @@
 #endif
 #define _TheaterItemsAPI_included
 
-#define INS_PL_BUYZONE (1 << 7)
+#define INS_PF_BUYZONE (1 << 7)
 
 public SharedPlugin __pl_TheaterItemsAPI =
 {
@@ -38,6 +38,16 @@ enum WEAPON_UPGRADE_SLOT
     WEAPON_UPGRADE_UNDERBARREL,   // underbarrel 下挂（前握把）
     WEAPON_UPGRADE_AESTHETIC,     // aesthetic 外观（快速换弹）
 }
+char g_cWeaponUpgradeSlotName[][] = {
+    "optics",
+    "ammo",
+    "magazine",
+    "barrel",
+    "stock",
+    "siderail",
+    "underbarrel",
+    "aesthetic",
+};
 #endif
 
 native int TI_GetTheaterItemIdByName(THEATER_ITEM_TABLE_TYPE iItemTableType, char[] cItemName);
@@ -184,16 +194,16 @@ stock bool GetPlayerGearItemName(int iItemIndex, char[] cItemName, int len)
  */
 stock bool IsClientHasGear(int client, char[] cGearName, char[] cReturnName = "", int len = 0)
 {
-    int iItemId = 255;
+    int iItemID = 255;
     int iMaxItems = GetEntPropArraySize(client, Prop_Send, "m_iMyGear");
     for (int i = 0; i < iMaxItems; i++)
     {
-        iItemId = GetEntProp(client, Prop_Send, "m_iMyGear", _, i);
-        if (iItemId == 255)
+        iItemID = GetEntProp(client, Prop_Send, "m_iMyGear", _, i);
+        if (iItemID == 255)
             continue;
         
         char cItemName[128];
-        GetPlayerGearItemName(iItemId, cItemName, sizeof(cItemName));
+        GetPlayerGearItemName(iItemID, cItemName, sizeof(cItemName));
         if (StrContains(cItemName, cGearName, false) > -1)
         {
             if (len > 0)
@@ -214,16 +224,16 @@ stock bool IsClientHasGear(int client, char[] cGearName, char[] cReturnName = ""
  */
 stock bool IsClientEquippedGear(int client, char[] cGearName)
 {
-    int iItemId = 255;
+    int iItemID = 255;
     int iMaxItems = GetEntPropArraySize(client, Prop_Send, "m_EquippedGear");
     for (int i = 0; i < iMaxItems; i++)
     {
-        iItemId = GetEntProp(client, Prop_Send, "m_EquippedGear", _, i);
-        if (iItemId == 255)
+        iItemID = GetEntProp(client, Prop_Send, "m_EquippedGear", _, i);
+        if (iItemID == 255)
             continue;
         
         char cItemName[128];
-        GetPlayerGearItemName(iItemId, cItemName, sizeof(cItemName));
+        GetPlayerGearItemName(iItemID, cItemName, sizeof(cItemName));
         if (StrContains(cItemName, cGearName, false) > -1)
             return true;
     }
@@ -260,11 +270,30 @@ stock bool IsWeaponHasUpgrade(int iWeaponID, char[] cUpgradeName)
  * Give weapon a upgrade by upgrade name
  * 
  * @param iWeaponID           Weapon index
+ * @param cUpgradeSlot        Weapon upgrade slot name
+ * @param cUpgradeName        Weapon Upgrade name in theater
+ * @return                    True on success, false otherwise.
+ */
+stock bool GiveUpgradeToWeaponByName(int iWeaponID, char[] cUpgradeSlot, char[] cUpgradeName)
+{
+    for (int iSlot = 0; iSlot < sizeof(g_cWeaponUpgradeSlotName); iSlot++)
+    {
+        if (StrEqual(cUpgradeSlot, g_cWeaponUpgradeSlotName[iSlot], false))
+            return GiveUpgradeToWeaponByNameEx(iWeaponID, view_as<WEAPON_UPGRADE_SLOT>(iSlot), cUpgradeName);
+    }
+    
+    return false;
+}
+
+ /**
+ * Give weapon a upgrade by upgrade name
+ * 
+ * @param iWeaponID           Weapon index
  * @param iUpgradeSlotType    Weapon upgrade slot type
  * @param cUpgradeName        Weapon Upgrade name in theater
  * @return                    True on success, false otherwise.
  */
-stock bool GiveUpgradeToWeaponByName(int iWeaponID, WEAPON_UPGRADE_SLOT iUpgradeSlotType, char[] cUpgradeName)
+stock bool GiveUpgradeToWeaponByNameEx(int iWeaponID, WEAPON_UPGRADE_SLOT iUpgradeSlotType, char[] cUpgradeName)
 {
     int iUpgradeID = GetTheaterItemIdByWeaponUpgradeName(cUpgradeName);
     return GiveUpgradeToWeaponByTheaterId(iWeaponID, iUpgradeSlotType, iUpgradeID);
@@ -298,20 +327,50 @@ stock bool GiveUpgradeToWeaponByTheaterId(int iWeaponID, WEAPON_UPGRADE_SLOT iUp
         if (iWeaponID != GetEntPropEnt(client, Prop_Data, "m_hActiveWeapon"))
             return false;
         
-        int iFlags = GetEntProp(client, Prop_Send, "m_iPlayerFlags");
-        if (iFlags & INS_PL_BUYZONE)
-            return false;
-        
         int iWeaponSlot = -1;
         for (int i = 0; i < 4 ; ++i)
         {
             if (GetPlayerWeaponSlot(client, i) == iWeaponID)
                 iWeaponSlot = i;
         }
-        SDKHooks_DropWeapon(client, iWeaponID, NULL_VECTOR, NULL_VECTOR);
-        EquipPlayerWeapon(client, iWeaponID);
-        ClientCommand(client, "slot%d", iWeaponSlot+1);
+        
+        int iFlags = GetEntProp(client, Prop_Send, "m_iPlayerFlags");
+        if (iFlags & INS_PF_BUYZONE)
+        {
+            SetEntProp(client, Prop_Send, "m_iPlayerFlags", iFlags & ~INS_PF_BUYZONE);
+            AcceptEntityInput(iWeaponID, "Use", client, client);
+            SetEntProp(client, Prop_Send, "m_iPlayerFlags", iFlags | INS_PF_BUYZONE);
+            
+            // ClientCommand(client, "slot5");
+            // ClientCommand(client, "slot4");
+            // ClientCommand(client, "slot3");
+            
+            // DataPack hDataPack = new DataPack();
+            // hDataPack.WriteCell(GetClientUserId(client));
+            // hDataPack.WriteCell(iWeaponSlot+1);
+            // CreateTimer(0.05, ClientCommandSlotDelay_Timer, hDataPack, TIMER_FLAG_NO_MAPCHANGE);
+        }
+        else
+        {
+            AcceptEntityInput(iWeaponID, "Use", client, client);
+            // SDKHooks_DropWeapon(client, iWeaponID, NULL_VECTOR, NULL_VECTOR);
+            // EquipPlayerWeapon(client, iWeaponID);
+        }
+        
         return true;
     }
     return false;
 }
+
+// public Action ClientCommandSlotDelay_Timer(Handle timer, DataPack hDataPack)
+// {
+//     hDataPack.Reset();
+//     int client = GetClientOfUserId(hDataPack.ReadCell());
+//     float iSlot = hDataPack.ReadCell();
+//     delete hDataPack;
+    
+//     if (client > 0 && client <= MaxClients && IsClientInGame(client))
+//         ClientCommand(client, "slot%d", iSlot);
+    
+//     return Plugin_Stop;
+// }

@@ -4,7 +4,7 @@
  * @Author: Gandor
  * @Github: https://github.com/gandor233
  * @Date: 2021-02-10 04:38:27
- * @LastEditTime: 2022-01-19 21:29:55
+ * @LastEditTime: 2022-08-20 11:39:49
  * @LastEditors: Gandor
  * @FilePath: \SourceMod_1.10.0\TheaterItemsAPI.sp
  */
@@ -16,14 +16,6 @@ public Plugin myinfo =
     version = "1.0",
     url = "https://github.com/gandor233"
 };
-
-#pragma semicolon 1
-// #include <sourcemod>
-// #include <sdktools>
-// #include <sdkhooks>
-// #undef REQUIRE_PLUGIN
-// #include <TheaterItemsAPI>
-// #define REQUIRE_PLUGIN
 
 #define DATA_SAVE_PATH           "cfg/theater_items"
 
@@ -46,6 +38,14 @@ char g_cTheaterItemsTableNameList[][] =
 };
 char g_cTheaterItemsList[sizeof(g_cTheaterItemsTableNameList)][256][128];
 int g_iTheaterItemsStringsCount[sizeof(g_cTheaterItemsTableNameList)];
+
+#pragma semicolon 1
+// #include <sourcemod>
+// #include <sdktools>
+// #include <sdkhooks>
+// #undef REQUIRE_PLUGIN
+// #include <TheaterItemsAPI>
+// #define REQUIRE_PLUGIN
 
 public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max)
 {
@@ -124,7 +124,7 @@ public int GetTheaterItemIdByName(THEATER_ITEM_TABLE_TYPE iItemTableType, char[]
         {
             if (StrEqual(g_cTheaterItemsList[iItemTableType][i], cItemName, false))
             {
-                PrintToServer("GetTheaterItemIdByName %s == %s - iUpgradeID: %d", cItemName, g_cTheaterItemsList[iItemTableType][i], i);
+                // PrintToServer("GetTheaterItemIdByName %s == %s - iTheaterItemID: %d", cItemName, g_cTheaterItemsList[iItemTableType][i], i);
                 return i;
             }
         }
